@@ -12,16 +12,9 @@
 <body>
 
     <form method="POST" action="/codesubmit">
-        <input type="text" name="code"><br>
+        <textarea rows="20" cols="80" name="code"><%= current_code %></textarea>
+        <input type="submit">
     </form>
-
-    <!-- <form method="POST" action="/u" enctype="multipart/form-data">
-        <div>
-            Username: <input type='file' name='file' />
-        </div>
-        <button>Zapisz</button>
-    </form> -->
-
     <%= ok %>
 </body>
 
