@@ -22,7 +22,11 @@
         <button>Zapisz</button>
     </form> -->
 
-    <%= ok %>
+ <%- include('select', {
+ name: 'combo1',
+ options: ok
+ }) %> 
+ <%= ok %>
 </body>
 
 </html>

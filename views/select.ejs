@@ -1,0 +1,9 @@
+<!-- select.ejs -->
+<table border="1" cellpadding="3" id="printTable">
+<tbody>
+<% options.forEach( option => { %>
+    <tr>
+        <th><a href=<%= option %>><%= option %></a></th>
+    </tr>
+<% }) %>
+</tbody></table>

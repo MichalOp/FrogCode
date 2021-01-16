@@ -22,6 +22,7 @@ app.get("/", (req, res) => {
 app.post("/codesubmit", (req, res) => {
   //console.log(req.body.code);
   username = req.body.code;
+
   userdirs = fs.readdirSync("./" + username);
   res.render("index", { ok: userdirs });
 });
