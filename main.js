@@ -30,16 +30,17 @@ app.post("/codesubmit", (req, res) => {
   res.render("index", { ok: userdirs });
 });
 
-app.get("/file/:name", function (req, res) {
+app.get("/:name", function (req, res) {
   var fileName = req.params.name;
-  console.log("Read file: " + fileName);
-  res.sendFile(__dirname + "/" + fileName);
-});
-
-app.get("/dir/:name", function (req, res) {
-  userdirs = fs.readdirSync("./" + req.params.name, { withFileTypes: true });
-  console.log("Read dir: " + userdirs);
-  res.render("index", { ok: userdirs });
+  var fileStats = fs.statSync(fileName);
+  if (fileStats.isFile()) {
+    console.log("Read file: " + fileName);
+    res.sendFile(__dirname + "/" + fileName);
+  } else {
+    userdirs = fs.readdirSync("./" + fileName, { withFileTypes: true });
+    console.log("Read dir: " + userdirs);
+    res.render("index", { ok: userdirs });
+  }
 });
 
 http.createServer(app).listen(3000);

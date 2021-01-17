@@ -3,7 +3,7 @@
 <tbody>
 <% options.forEach( option => { %>
     <tr>
-        <th><% if(option.isFile()){%><a href=file/<%= option.name %>><%= option.name %></a><%}else{%><a href=dir/<%= option.name %>><%= option.name %></a><% }%></th>
+        <th><% if(option.isFile()){%><a href=<%= option.name %>><%= option.name %></a><%}else{%><a href=<%= option.name %>><%= option.name %></a><% }%></th>
         <th><% if(option.isFile()){%>File <%}else{%> Directory <% }%> </th>
     </tr>
 <% }) %>
