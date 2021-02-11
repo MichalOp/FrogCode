@@ -11,11 +11,12 @@
 
 <body>
 
-    <form method="POST" action="/codesubmit">
-        <textarea rows="20" cols="80" name="code"><%= current_code %></textarea>
+    <form method="POST" action="/login">
+        <label for="name">User:</label><br>
+        <input type="text" id="name" name="name"><br>
         <input type="submit">
     </form>
-    <%= ok %>
+    <a href="/term">Lets goo</a>
 </body>
 
 </html>
