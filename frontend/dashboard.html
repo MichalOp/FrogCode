@@ -6,7 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="css/login.css">
 </head>
-<body>
+<body onload="RefreshTable()">
+  <button type="button" onclick="RefreshTable()">Get table</button><br>
+  <input id="pname" type="text" value>
+  <button type="button" onclick="AddNewProject()">Add new project</button><br>
   <table id="projectTable">
   </table>
   <script type="text/javascript" src="./dashboard.js"></script>
