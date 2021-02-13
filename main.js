@@ -35,12 +35,17 @@ app.get('/term', (req, res) => {
 
 app.post('/login', (req, res) => {
     console.log(req.body.name);
-
+    console.log(req.body.pwd);
+    if(!req.body.pwd){
+        res.json({success:false});
+        return;
+    }
     console.log(`Updating session for user ${req.body.name}`);
     req.session.userId = req.body.name;
     req.session.save();
     res.redirect("/");
 });
+
 
 io.on('connection', function (client) {
 
@@ -53,11 +58,11 @@ io.on('connection', function (client) {
         console.log(`user: ${sess.userId}`)
     }
 
-    const sh = spawn('docker', ['run', '-it', '--rm', 
-    '--mount',  `src=${__dirname}/data/${sess.userId},target=/root/${sess.userId},type=bind`,
-    '-w',       `/root/${sess.userId}`,
-    'python:3.7',
-    'bash'], {
+    const sh = spawn('docker', ['run', '-it', '--rm',
+        '--mount', `src=${__dirname}/data/${sess.userId},target=/root/${sess.userId},type=bind`,
+        '-w', `/root/${sess.userId}`,
+        'python:3.7',
+        'bash'], {
         name: 'xterm-color',
         cols: 80,
         rows: 30

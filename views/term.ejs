@@ -10,7 +10,7 @@
   <body>
     <div id="terminal"></div> 
     <script type="text/javascript" charset="utf-8">
-      var socket = io('http://localhost:8099')
+      var socket = io(location.hostname+':8099')
       var term = new Terminal();
       term.open(document.getElementById('terminal'));
       //socket io listeners
