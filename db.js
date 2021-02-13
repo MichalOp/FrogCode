@@ -8,9 +8,11 @@ async function selectUser(username, verbose = false) {
     password: "1234",
   });
   try {
-    var result = await pool.query(
-      `select * from users where username = '${username}' limit 1;`
-    );
+    const queryOpts = {
+      text: "select * from users where username = $1 limit 1;",
+      values: [username],
+    };
+    var result = await pool.query(queryOpts);
     var found = false;
     var user;
     result.rows.forEach((r) => {
@@ -44,9 +46,12 @@ async function writeUser(displayname, username, pwdhash, verbose = false) {
     password: "1234",
   });
   try {
-    var result = await pool.query(
-      `INSERT INTO users (displayname,username,pwdhash,sys) values ('${displayname}','${username}','${pwdhash}','${sys}') RETURNING id;`
-    );
+    const queryOpts = {
+      text:
+        "INSERT INTO users (displayname,username,pwdhash,sys) values ($1,$2,$3,$4) RETURNING id;",
+      values: [displayname, username, pwdhash, sys],
+    };
+    var result = await pool.query(queryOpts);
     result.rows.forEach((r) => {
       console.log(`New user ${r.username} of id: ${r.id}`);
     });
@@ -73,9 +78,11 @@ async function changePwd(username, pwdhash) {
     password: "1234",
   });
   try {
-    await pool.query(
-      `UPDATE users SET pwdhash = '${pwdhash}' WHERE users.username = '${username}';`
-    );
+    const queryOpts = {
+      text: "UPDATE users SET pwdhash = $1 WHERE users.username = $2;",
+      values: [pwdhash, username],
+    };
+    await pool.query(queryOpts);
   } catch (err) {
     console.log(err);
   }
