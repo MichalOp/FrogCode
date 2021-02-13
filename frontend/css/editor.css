@@ -1,0 +1,32 @@
+.nested {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.treenode {
+    cursor: pointer;
+    user-select: none;
+}
+
+.treenode::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.treenode-down::before {
+  transform: rotate(90deg);
+}
+
+ul, #myUL {
+    list-style-type: none;
+}
+
+#myUL {
+  margin: 0;
+  padding: 0;
+}

@@ -5,5 +5,5 @@ function login() {
     console.log(email,pswd)
 
     console.log("go to dashboard")
-    //window.location.replace("successfullsignup.html")
+    window.location.replace("dashboard.html")
 }

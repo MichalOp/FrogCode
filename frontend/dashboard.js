@@ -40,6 +40,7 @@ function AddNewProject() {
 function CreateProjectButton(projectName) {
     var button = document.createElement("button");
     button.type = "button";
+    button.classList.add("projectButton");
     button.innerHTML = projectName;
     button.onclick = () => ProjectSelected(projectName);
     return button;
