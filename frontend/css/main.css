@@ -1,0 +1,138 @@
+html {
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    margin: 0px;
+    min-height: 100%;
+    width: 100%;
+}
+
+.bar {
+    position: fixed;
+    top: 0;
+    width: 70%;
+    overflow: hidden;
+    padding-left: 15%;
+    padding-right: 15%;
+    background-color: #000000;
+}
+
+.nav_button, .login_nav_button
+{
+    float: left;
+    text-decoration: none;
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+}
+
+.login_nav_button {
+    float: right;
+}
+
+.nav_button:hover {
+    background-color: #333;
+}
+
+.login_nav_button:hover {
+    background-color: #333;
+}
+
+.rectangle {
+    float: left;
+    width: 15%;
+    padding: 14px 16px;
+}
+
+.block {
+    padding: 3% 15% 0% 15%;
+    margin-bottom: 1px;
+}
+
+.frogcode-title {
+    background-image: linear-gradient(to top right, green, yellow);
+    padding-bottom: 10%;
+    padding-top: 7%;
+}
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.pricingTable-title {
+    text-align: center;
+    color: black;
+    font-size: 300%;
+    margin-bottom: 20px;
+}
+
+.pricingTable-subtitle {
+    text-align: center;
+    color: #b4bdc6;
+    font-size: 150%;
+    margin-bottom: 60px;
+}
+
+.columns {
+  float: left;
+  width: 32%;
+  padding: 8px;
+}
+
+/* Style the list */
+.price {
+  list-style-type: none;
+  border: 1px solid #eee;
+  margin: 0;
+  padding: 0;
+  transition: 0.3s;
+}
+
+/* Add shadows on hover */
+.price:hover {
+    box-shadow: 0 8px 12px 0 rgba(0,0,0,0.2);
+    transform: scale(1.08);
+}
+
+/* Pricing header */
+.price .header {
+  background-color: #111;
+  color: white;
+  font-size: 25px;
+}
+
+/* List items */
+.price li {
+  border-bottom: 1px solid #eee;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Grey list item */
+.price .grey {
+  background-color: #eee;
+  font-size: 20px;
+}
+
+/* The "Sign Up" button */
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 18px;
+}
