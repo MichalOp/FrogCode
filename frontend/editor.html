@@ -7,7 +7,14 @@
   <link rel="stylesheet" href="css/editor.css">
 </head>
 <body onload="RenderFileTree({}, 'test')">
-  <div id="filetree"></div>
+  <div class="filetreestyle" id="filetree"></div>
+  <div class="rightside">
+    <div class="editor">
+      <textarea id="editor" rows="50" cols="100">
+      </textarea>
+    </div>
+    <div class="terminal" id="terminal" onload="StartTerminal()"></div>
+  </div>
   <script type="text/javascript" src="./editor.js"></script>
-</body>
+ </body>
 </html>

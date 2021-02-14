@@ -30,3 +30,29 @@ ul, #myUL {
   margin: 0;
   padding: 0;
 }
+
+.filetreestyle {
+    display:inline-block;
+    float:left;
+    width: 25%;
+}
+
+.rightside {
+    display:inline-block;
+    float:left;
+    width: 75%;
+}
+
+.editor {
+    display:inline-block;
+    float:left;
+    width: 75%;
+    height:75%;
+}
+
+.terminal {
+    display:inline-block;
+    float:left;
+    width: 50%;
+    height: 25%;
+}
