@@ -29,7 +29,7 @@ module.exports = function (app) {
     dbjs
       .createUser(req.body.displayname, req.body.username, req.body.pwdhash)
       .then((dbsuccess) => {
-        var fssuccess = fsjs.createHomeDir(username);
+        var fssuccess = fsjs.createHomeDir(req.body.username);
         var success = dbsuccess && fssuccess;
         res.json({ success: success });
       });
