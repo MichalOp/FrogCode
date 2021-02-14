@@ -1,5 +1,4 @@
 var fs = require("fs");
-var sanitize = require("sanitize-filename");
 var pathmodule = require("path");
 
 function fishyPath(pathProject, path) {
@@ -8,7 +7,6 @@ function fishyPath(pathProject, path) {
     pathmodule.resolve(pathProject, path);
 
   return areDotsOrSymlinks;
-  /* we should add here checking for weird characters */
 }
 
 function getObject(username, project, path) {
