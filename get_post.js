@@ -28,7 +28,9 @@ module.exports = function (app) {
   app.post("/createUser", (req, res) => {
     dbjs
       .createUser(req.body.displayname, req.body.username, req.body.pwdhash)
-      .then((success) => {
+      .then((dbsuccess) => {
+        var fssuccess = fsjs.createHomeDir(username);
+        var success = dbsuccess && fssuccess;
         res.json({ success: success });
       });
   });
@@ -100,6 +102,20 @@ module.exports = function (app) {
     }
 
     var success = fsjs.createFile(
+      req.body.username,
+      req.body.project,
+      req.body.path
+    );
+    res.json({ success: success });
+  });
+
+  app.post("/createDir", (req, res) => {
+    if (req.session.userId != req.body.username) {
+      res.json({ success: false, reason: "bad session id" });
+      return;
+    }
+
+    var success = fsjs.createDir(
       req.body.username,
       req.body.project,
       req.body.path
