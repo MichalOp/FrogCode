@@ -68,7 +68,7 @@ module.exports = function (app) {
 
     var username = req.session.userId;
 
-    projects = fsjs.getProjects(req.body.username);
+    projects = fsjs.getProjects(username);
     res.json({ projects: projects });
   });
 
