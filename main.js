@@ -1,28 +1,35 @@
-var http = require('http');
-var express = require('express');
-var multer = require('multer');
-//var upload = multer({ dest: './data' })
+var http = require("http");
+var express = require("express");
+const session = require("express-session");
+const fs = require("fs");
+
+try {
+  fs.statSync("./projects");
+} catch (error) {
+  fs.mkdirSync("./projects");
+}
+
 var app = express();
+server = http.createServer(app);
 
-app.set('view engine', 'ejs');
-app.set('views', './views');
+app.set("view engine", "ejs");
+app.set("views", "./views");
 
+app.use("/node_modules", express.static("./node_modules"));
 app.use(express.urlencoded({ extended: true }));
 
-
-app.get('/', (req, res) => {
-    res.render('index', { ok:"nie ok"});
+const sessionParser = session({
+  saveUninitialized: false,
+  secret: "$eCuRiTy",
+  resave: false,
 });
 
-// app.post('/u', upload.single('file'), (req, res) => {
-//     console.log(req.file);
-//     res.render('index', { ok:"ok" });
-// });
+app.use(sessionParser);
 
-app.post('/codesubmit', (req, res) => {
-    console.log(req.body.code);
-    res.render('index', { ok:"ok" });
-});
+executor = require("./execution.js");
+api = require("./get_post.js");
 
+executor(server, sessionParser);
+api(app);
 
-http.createServer(app).listen(3000);
+server.listen(8099);
