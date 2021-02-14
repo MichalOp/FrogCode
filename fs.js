@@ -6,11 +6,31 @@ function fishyPath(pathProject, path) {
   if (path == ".") return false;
   if (path == "") return true;
 
-  var areDotsOrSymlinks =
+  var fullPath = pathProject + path;
+
+  fpls = fullPath.split("/");
+  var areSymlinks = false;
+  var partPath = "";
+  var broken = false;
+  fpls.forEach((name) => {
+    if (broken || areSymlinks) return;
+    partPath += name;
+    try {
+      var stats = fs.statSync(partPath);
+      if (stats.isSymbolicLink()) {
+        areSymlinks = true;
+        return;
+      }
+    } catch (error) {
+      broken = true;
+    }
+  });
+
+  var areDots =
     pathmodule.resolve(pathProject) + "/" + path !=
     pathmodule.resolve(pathProject, path);
 
-  return areDotsOrSymlinks;
+  return areDots || areSymlinks;
 }
 
 function fishyProject(project) {
