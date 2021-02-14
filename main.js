@@ -20,9 +20,9 @@ const sessionParser = session({
 app.use(sessionParser);
 
 executor = require("./execution.js");
-pseudo_login = require("./pseudologin.js");
+api = require("./get_post.js");
 
 executor(server, sessionParser);
-pseudo_login(app);
+api(app);
 
 server.listen(8099);

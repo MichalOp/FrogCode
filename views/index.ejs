@@ -10,15 +10,101 @@
 </head>
 
 <body>
-
-    <form method="POST" action="/login">
-        <label for="name">User:</label><br>
-        <input type="text" id="name" name="name"><br>
-        <label for="pwd">Password:</label><br>
-        <input type="text" id="pwd" name="pwd"><br>
+    <label for="name">Sign in:</label><br>
+    <form method="POST" action="/authenticateUser">
+        <label for="name">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="name">Pwdhash:</label><br>
+        <input type="text" id="pwdhash" name="pwdhash"><br>
         <input type="submit">
     </form>
-    <a href="/term">Lets goo</a>
+    <label for="name">Sign up:</label><br>
+    <form method="POST" action="/createUser">
+        <label for="name">Displayname:</label><br>
+        <input type="text" id="displayname" name="displayname"><br>
+        <label for="name">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="name">Pwdhash:</label><br>
+        <input type="text" id="pwdhash" name="pwdhash"><br>
+        <input type="submit">
+    </form>
+    <label for="name">Change password proided youre logged in:</label><br>
+    <form method="POST" action="/changePwd">
+        <label for="name">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="name">Pwdhash:</label><br>
+        <input type="text" id="pwdhash" name="pwdhash"><br>
+        <input type="submit">
+    </form>
+    <label for="name">Get object</label><br>
+    <form method="POST" action="/getObject">
+        <label for="name">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="name">Project:</label><br>
+        <input type="text" id="project" name="project"><br>
+        <label for="name">Path:</label><br>
+        <input type="text" id="path" name="path"><br>
+        <input type="submit">
+    </form>
+    <label for="name">Get projects</label><br>
+    <form method="POST" action="/getProjects">
+        <label for="name">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <input type="submit">
+    </form>
+    <label for="name">Write file</label><br>
+    <form method="POST" action="/writeFile">
+        <label for="name">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="name">Project:</label><br>
+        <input type="text" id="project" name="project"><br>
+        <label for="name">Path:</label><br>
+        <input type="text" id="path" name="path"><br>
+        <label for="name">Text:</label><br>
+        <input type="text" id="text" name="text"><br>
+        <input type="submit">
+    </form>
+    <label for="name">Create project:</label><br>
+    <form method="POST" action="/createProject">
+        <label for="name">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="name">Project:</label><br>
+        <input type="text" id="project" name="project"><br>
+        <input type="submit">
+    </form>
+    <label for="name">Create file</label><br>
+    <form method="POST" action="/createFile">
+        <label for="name">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="name">Project:</label><br>
+        <input type="text" id="project" name="project"><br>
+        <label for="name">Path:</label><br>
+        <input type="text" id="path" name="path"><br>
+        <input type="submit">
+    </form>
+    <label for="name">Rename file</label><br>
+    <form method="POST" action="/renameFile">
+        <label for="name">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="name">Project:</label><br>
+        <input type="text" id="project" name="project"><br>
+        <label for="name">Path:</label><br>
+        <input type="text" id="path" name="path"><br>
+        <label for="name">Newpath:</label><br>
+        <input type="text" id="newpath" name="newpath"><br>
+        <input type="submit">
+    </form>
+    <label for="name">Delete file</label><br>
+    <form method="POST" action="/deleteFile">
+        <label for="name">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="name">Project:</label><br>
+        <input type="text" id="project" name="project"><br>
+        <label for="name">Path:</label><br>
+        <input type="text" id="path" name="path"><br>
+        <input type="submit">
+    </form>
+    <a href="/term">Open terminal</a>
 </body>
 
 </html>
