@@ -37,9 +37,6 @@ module.exports = function (app) {
         var fssuccess = false;
         if (dbsuccess) fssuccess = fsjs.createHomeDir(req.body.username);
         var success = dbsuccess && fssuccess;
-        console.log(fssuccess);
-        console.log(dbsuccess);
-        console.log(req.body.username);
         res.json({ success: success });
       });
   });
