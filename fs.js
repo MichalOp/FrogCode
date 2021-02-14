@@ -6,7 +6,7 @@ function fishyPath(pathProject, path) {
   if (path == ".") return false;
   if (path == "") return true;
 
-  var fullPath = pathProject + path;
+  var fullPath = pathProject + "/" + path;
 
   fpls = fullPath.split("/");
   var areSymlinks = false;
@@ -16,7 +16,7 @@ function fishyPath(pathProject, path) {
     if (broken || areSymlinks) return;
     partPath += name;
     try {
-      var stats = fs.statSync(partPath);
+      var stats = fs.lstatSync(partPath);
       if (stats.isSymbolicLink()) {
         areSymlinks = true;
         return;
@@ -24,6 +24,7 @@ function fishyPath(pathProject, path) {
     } catch (error) {
       broken = true;
     }
+    partPath += "/";
   });
 
   var areDots =
