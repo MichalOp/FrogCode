@@ -27,9 +27,15 @@ module.exports = function (app) {
 
   app.post("/createUser", (req, res) => {
     dbjs
-      .createUser(req.body.displayname, req.body.username, req.body.pwdhash)
+      .createUser(
+        req.body.displayname,
+        req.body.username,
+        req.body.pwdhash,
+        (verbose = true)
+      )
       .then((dbsuccess) => {
-        var fssuccess = fsjs.createHomeDir(req.body.username);
+        var fssuccess = false;
+        if (dbsuccess) fssuccess = fsjs.createHomeDir(req.body.username);
         var success = dbsuccess && fssuccess;
         res.json({ success: success });
       });
