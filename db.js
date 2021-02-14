@@ -56,14 +56,21 @@ async function writeUser(displayname, username, pwdhash, verbose = false) {
     });
   } catch (err) {
     if (verbose) console.log(err);
+    return false;
   }
+  return true;
 }
 
 async function createUser(displayname, username, pwdhash, verbose = false) {
   var does_exist = await selectUser(username, verbose);
   if (!does_exist) {
-    await writeUser(displayname, username, pwdhash, (verbose = true));
-    return true;
+    var success = await writeUser(
+      displayname,
+      username,
+      pwdhash,
+      (verbose = true)
+    );
+    return success;
   }
   return false;
 }
@@ -83,7 +90,9 @@ async function changePwd(username, pwdhash) {
     await pool.query(queryOpts);
   } catch (err) {
     console.log(err);
+    return false;
   }
+  return true;
 }
 
 module.exports = {

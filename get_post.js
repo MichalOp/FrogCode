@@ -39,8 +39,8 @@ module.exports = function (app) {
       return;
     }
 
-    dbjs.changePwd(req.body.username, req.body.pwdhash).then(() => {
-      res.json({ success: true });
+    dbjs.changePwd(req.body.username, req.body.pwdhash).then((success) => {
+      res.json({ success: success });
     });
   });
 
