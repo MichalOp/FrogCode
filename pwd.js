@@ -4,4 +4,6 @@ function getPwdhash(s) {
   return md5(s);
 }
 
-console.log(getPwdhash("root"));
+module.exports = {
+  getPwdhash,
+};

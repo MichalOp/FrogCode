@@ -1,10 +1,11 @@
 var fs = require("fs");
 var sanitize = require("sanitize-filename");
+var pathmodule = require("path");
 
 function fishyPath(pathProject, path) {
   var areDotsOrSymlinks =
-    fs.realpathSync(pathProject) + "/" + path !=
-    fs.realpathSync(pathProject + "/" + path);
+    pathmodule.resolve(pathProject) + "/" + path !=
+    pathmodule.resolve(pathProject, path);
 
   return areDotsOrSymlinks;
   /* we should add here checking for weird characters */
@@ -12,11 +13,11 @@ function fishyPath(pathProject, path) {
 
 function getObject(username, project, path) {
   var pathProject = "./projects/" + username + "/" + project;
-  if (fishyPath(pathProject, path)) return "";
+  if (fishyPath(pathProject, path)) return { type: "error", data: "" };
   var pathFull = pathProject + "/" + path;
   var stats = fs.statSync(pathFull);
-  if (stats.isFile()) return readFile(pathFull);
-  else if (stats.isDirectory()) return readDir(pathFull);
+  if (stats.isFile()) return { type: "file", data: readFile(pathFull) + "" };
+  else if (stats.isDirectory()) return { type: "dir", data: readDir(pathFull) };
 }
 
 function readFile(pathFull) {
@@ -35,58 +36,89 @@ function writeFile(username, project, path, text) {
   var pathProject = "./projects/" + username + "/" + project;
   if (fishyPath(pathProject, path)) return false;
   var pathFull = pathProject + "/" + path;
-  if (fs.statSync(pathFull)) {
+  try {
+    fs.statSync(pathFull);
     fs.writeFileSync(pathFull, text, {
       encoding: "utf8",
       flag: "w",
     });
     return true;
+  } catch (error) {
+    return false;
   }
-  return false;
 }
 
 function createProject(username, project) {
   var pathProject = "./projects/" + username + "/" + project;
-  if (fishyPath(pathProject, path)) return false;
-  if (!fs.statSync(pathProject)) {
+  try {
+    fs.statSync(pathProject);
+    return false;
+  } catch (error) {
     fs.mkdirSync(pathProject);
     return true;
   }
-  return false;
 }
 
 function createFile(username, project, path) {
   var pathProject = "./projects/" + username + "/" + project;
-  if (fishyPath(pathProject, path)) return false;
   var pathFull = pathProject + "/" + path;
-  if (!fs.statSync(pathFull)) {
-    fs.writeFileSync(pathFull, "", text, {
+  try {
+    fs.statSync(pathProject);
+    if (fishyPath(pathProject, path)) return false;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+  try {
+    fs.statSync(pathFull);
+    return false;
+  } catch (error) {
+    fs.writeFileSync(pathFull, "", {
       encoding: "utf8",
       flag: "w",
     });
     return true;
   }
-  return false;
 }
 
 function renameFile(username, project, path, newpath) {
   var pathProject = "./projects/" + username + "/" + project;
   if (fishyPath(pathProject, path)) return false;
   var pathFull = pathProject + "/" + path;
-  if (fs.statSync(pathFull)) {
-    fs.rename(pathFull, pathProject + "/" + newpath);
+  try {
+    fs.statSync(pathProject + "/" + newpath);
+    return false;
+  } catch (error) {}
+
+  try {
+    fs.statSync(pathFull);
+    fs.renameSync(pathFull, pathProject + "/" + newpath);
     return true;
+  } catch (error) {
+    console.log(error);
+    return false;
   }
-  return false;
 }
 
 function deleteFile(username, project, path) {
   var pathProject = "./projects/" + username + "/" + project;
   if (fishyPath(pathProject, path)) return false;
   var pathFull = pathProject + "/" + path;
-  if (fs.statSync(pathFull)) {
-    fs.unlink(pathFull);
+  try {
+    fs.statSync(pathFull);
+    fs.unlinkSync(pathFull);
     return true;
+  } catch (error) {
+    return false;
   }
-  return false;
 }
+
+module.exports = {
+  getObject,
+  getProjects,
+  writeFile,
+  createProject,
+  createFile,
+  renameFile,
+  deleteFile,
+};

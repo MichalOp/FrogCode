@@ -20,7 +20,6 @@ async function selectUser(username, verbose = false) {
       user = r;
       console.log(`${JSON.stringify(r, null, 4)}`);
     });
-    if (!found) console.log(`No such user as ${username}`);
   } catch (err) {
     if (verbose) console.log(err);
   }
@@ -48,14 +47,13 @@ async function writeUser(displayname, username, pwdhash, verbose = false) {
   try {
     const queryOpts = {
       text:
-        "INSERT INTO users (displayname,username,pwdhash,sys) values ($1,$2,$3,$4) RETURNING id;",
-      values: [displayname, username, pwdhash, sys],
+        "INSERT INTO users (displayname,username,pwdhash) values ($1,$2,$3) RETURNING id;",
+      values: [displayname, username, pwdhash],
     };
     var result = await pool.query(queryOpts);
     result.rows.forEach((r) => {
       console.log(`New user ${r.username} of id: ${r.id}`);
     });
-    if (!found) console.log(`No such user as ${username}`);
   } catch (err) {
     if (verbose) console.log(err);
   }
@@ -63,8 +61,8 @@ async function writeUser(displayname, username, pwdhash, verbose = false) {
 
 async function createUser(displayname, username, pwdhash, verbose = false) {
   var does_exist = await selectUser(username, verbose);
-  if (does_exist) {
-    await writeUser(displayname, username, pwdhash, (verbose = false));
+  if (!does_exist) {
+    await writeUser(displayname, username, pwdhash, (verbose = true));
     return true;
   }
   return false;
@@ -88,5 +86,13 @@ async function changePwd(username, pwdhash) {
   }
 }
 
-authenticateUser("trump", "63a9f0ea7bb98050796b649e85481845", (verbose = true));
-selectUser("halo", (verbose = true));
+module.exports = {
+  selectUser,
+  authenticateUser,
+  writeUser,
+  createUser,
+  changePwd,
+};
+
+//authenticateUser("trump", "63a9f0ea7bb98050796b649e85481845", (verbose = true));
+//selectUser("halo", (verbose = true));
