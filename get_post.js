@@ -28,54 +28,60 @@ module.exports = function (app) {
   app.post("/createUser", (req, res) => {
     dbjs
       .createUser(req.body.displayname, req.body.username, req.body.pwdhash)
-      .then((success) => {
+      .then((dbsuccess) => {
+        var fssuccess = fsjs.createHomeDir(username);
+        var success = dbsuccess && fssuccess;
         res.json({ success: success });
       });
   });
 
   app.post("/changePwd", (req, res) => {
-    if (req.session.userId != req.body.username) {
+    if (!req.session || !req.session.userId) {
       res.json({ success: false, reason: "bad session id" });
       return;
     }
 
-    dbjs.changePwd(req.body.username, req.body.pwdhash).then((success) => {
+    var username = req.session.userId;
+
+    dbjs.changePwd(username, req.body.newpwdhash).then((success) => {
       res.json({ success: success });
     });
   });
 
   app.post("/getObject", (req, res) => {
-    if (req.session.userId != req.body.username) {
+    if (!req.session || !req.session.userId) {
       res.json({ success: false, reason: "bad session id" });
       return;
     }
 
-    var obj = fsjs.getObject(
-      req.body.username,
-      req.body.project,
-      req.body.path
-    );
+    var username = req.session.userId;
+
+    var obj = fsjs.getObject(username, req.body.project, req.body.path);
     res.json(obj);
   });
 
   app.post("/getProjects", (req, res) => {
-    if (req.session.userId != req.body.username) {
+    if (!req.session || !req.session.userId) {
       res.json({ success: false, reason: "bad session id" });
       return;
     }
+
+    var username = req.session.userId;
 
     projects = fsjs.getProjects(req.body.username);
     res.json({ projects: projects });
   });
 
   app.post("/writeFile", (req, res) => {
-    if (req.session.userId != req.body.username) {
+    if (!req.session || !req.session.userId) {
       res.json({ success: false, reason: "bad session id" });
       return;
     }
 
+    var username = req.session.userId;
+
     var success = fsjs.writeFile(
-      req.body.username,
+      username,
       req.body.project,
       req.body.path,
       req.body.text
@@ -84,37 +90,51 @@ module.exports = function (app) {
   });
 
   app.post("/createProject", (req, res) => {
-    if (req.session.userId != req.body.username) {
+    if (!req.session || !req.session.userId) {
       res.json({ success: false, reason: "bad session id" });
       return;
     }
 
-    var success = fsjs.createProject(req.body.username, req.body.project);
+    var username = req.session.userId;
+
+    var success = fsjs.createProject(username, req.body.project);
     res.json({ success: success });
   });
 
   app.post("/createFile", (req, res) => {
-    if (req.session.userId != req.body.username) {
+    if (!req.session || !req.session.userId) {
       res.json({ success: false, reason: "bad session id" });
       return;
     }
 
-    var success = fsjs.createFile(
-      req.body.username,
-      req.body.project,
-      req.body.path
-    );
+    var username = req.session.userId;
+
+    var success = fsjs.createFile(username, req.body.project, req.body.path);
+    res.json({ success: success });
+  });
+
+  app.post("/createDir", (req, res) => {
+    if (!req.session || !req.session.userId) {
+      res.json({ success: false, reason: "bad session id" });
+      return;
+    }
+
+    var username = req.session.userId;
+
+    var success = fsjs.createDir(username, req.body.project, req.body.path);
     res.json({ success: success });
   });
 
   app.post("/renameFile", (req, res) => {
-    if (req.session.userId != req.body.username) {
+    if (!req.session || !req.session.userId) {
       res.json({ success: false, reason: "bad session id" });
       return;
     }
 
+    var username = req.session.userId;
+
     var success = fsjs.renameFile(
-      req.body.username,
+      username,
       req.body.project,
       req.body.path,
       req.body.newpath
@@ -123,16 +143,14 @@ module.exports = function (app) {
   });
 
   app.post("/deleteFile", (req, res) => {
-    if (req.session.userId != req.body.username) {
+    if (!req.session || !req.session.userId) {
       res.json({ success: false, reason: "bad session id" });
       return;
     }
 
-    var success = fsjs.deleteFile(
-      req.body.username,
-      req.body.project,
-      req.body.path
-    );
+    var username = req.session.userId;
+
+    var success = fsjs.deleteFile(username, req.body.project, req.body.path);
 
     res.json({ success: success });
   });

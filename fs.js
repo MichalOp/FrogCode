@@ -57,6 +57,17 @@ function createProject(username, project) {
   }
 }
 
+function createHomeDir(username) {
+  var path = "./projects/" + username;
+  try {
+    fs.statSync(path);
+    return false;
+  } catch (error) {
+    fs.mkdirSync(path);
+    return true;
+  }
+}
+
 function createFile(username, project, path) {
   var pathProject = "./projects/" + username + "/" + project;
   var pathFull = pathProject + "/" + path;
@@ -75,6 +86,25 @@ function createFile(username, project, path) {
       encoding: "utf8",
       flag: "w",
     });
+    return true;
+  }
+}
+
+function createDir(username, project, path) {
+  var pathProject = "./projects/" + username + "/" + project;
+  var pathFull = pathProject + "/" + path;
+  try {
+    fs.statSync(pathProject);
+    if (fishyPath(pathProject, path)) return false;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+  try {
+    fs.statSync(pathFull);
+    return false;
+  } catch (error) {
+    fs.mkdirSync(pathFull);
     return true;
   }
 }
@@ -119,4 +149,6 @@ module.exports = {
   createFile,
   renameFile,
   deleteFile,
+  createDir,
+  createHomeDir,
 };
