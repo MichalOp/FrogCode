@@ -61,10 +61,39 @@ async function writeUser(displayname, username, pwdhash, verbose = false) {
   return true;
 }
 
+async function deleteUserQuery(username, verbose = false) {
+  var pool = new pg.Pool({
+    host: "localhost",
+    database: "postgres",
+    user: "postgres",
+    password: "1234",
+  });
+  try {
+    const queryOpts = {
+      text: "DELETE FROM users WHERE username = $1;",
+      values: [username],
+    };
+    await pool.query(queryOpts);
+  } catch (err) {
+    if (verbose) console.log(err);
+    return false;
+  }
+  return true;
+}
+
 async function createUser(displayname, username, pwdhash, verbose = false) {
   var does_exist = await selectUser(username, verbose);
   if (!does_exist) {
     var success = await writeUser(displayname, username, pwdhash, verbose);
+    return success;
+  }
+  return false;
+}
+
+async function deleteUser(username, verbose = false) {
+  var does_exist = await selectUser(username, verbose);
+  if (does_exist) {
+    var success = await deleteUserQuery(username, verbose);
     return success;
   }
   return false;
@@ -96,4 +125,5 @@ module.exports = {
   writeUser,
   createUser,
   changePwd,
+  deleteUser,
 };

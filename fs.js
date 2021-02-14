@@ -1,8 +1,10 @@
 var fs = require("fs");
 var pathmodule = require("path");
+var sanitize = require("sanitize-filename");
 
 function fishyPath(pathProject, path) {
   if (path == ".") return false;
+  if (path == "") return true;
 
   var areDotsOrSymlinks =
     pathmodule.resolve(pathProject) + "/" + path !=
@@ -11,10 +13,14 @@ function fishyPath(pathProject, path) {
   return areDotsOrSymlinks;
 }
 
+function fishyProject(project) {
+  return project == "" || project != sanitize(project);
+}
+
 function getObject(username, project, path) {
   var pathProject = "./projects/" + username + "/" + project;
-  if (fishyPath(pathProject, path))
-    return { type: "error", data: "fishy path" };
+  if (fishyProject(project) || fishyPath(pathProject, path))
+    return { type: "error", data: "fishy project/path" };
   var pathFull = pathProject + "/" + path;
   var stats;
   try {
@@ -40,7 +46,7 @@ function getProjects(username) {
 
 function writeFile(username, project, path, text) {
   var pathProject = "./projects/" + username + "/" + project;
-  if (fishyPath(pathProject, path)) return false;
+  if (fishyProject(project) || fishyPath(pathProject, path)) return false;
   var pathFull = pathProject + "/" + path;
   try {
     fs.statSync(pathFull);
@@ -55,6 +61,7 @@ function writeFile(username, project, path, text) {
 }
 
 function createProject(username, project) {
+  if (fishyProject(project)) return false;
   var pathProject = "./projects/" + username + "/" + project;
   try {
     fs.statSync(pathProject);
@@ -79,9 +86,9 @@ function createHomeDir(username) {
 function createFile(username, project, path) {
   var pathProject = "./projects/" + username + "/" + project;
   var pathFull = pathProject + "/" + path;
+  if (fishyProject(project) || fishyPath(pathProject, path)) return false;
   try {
     fs.statSync(pathProject);
-    if (fishyPath(pathProject, path)) return false;
   } catch (error) {
     console.log(error);
     return false;
@@ -101,9 +108,9 @@ function createFile(username, project, path) {
 function createDir(username, project, path) {
   var pathProject = "./projects/" + username + "/" + project;
   var pathFull = pathProject + "/" + path;
+  if (fishyProject(project) || fishyPath(pathProject, path)) return false;
   try {
     fs.statSync(pathProject);
-    if (fishyPath(pathProject, path)) return false;
   } catch (error) {
     console.log(error);
     return false;
@@ -119,7 +126,12 @@ function createDir(username, project, path) {
 
 function renameFile(username, project, path, newpath) {
   var pathProject = "./projects/" + username + "/" + project;
-  if (fishyPath(pathProject, path)) return false;
+  if (
+    fishyProject(project) ||
+    fishyPath(pathProject, path) ||
+    fishyPath(pathProject, newpath)
+  )
+    return false;
   var pathFull = pathProject + "/" + path;
   try {
     fs.statSync(pathProject + "/" + newpath);
@@ -136,17 +148,46 @@ function renameFile(username, project, path, newpath) {
   }
 }
 
-function deleteFile(username, project, path) {
+function deleteObject(username, project, path) {
   var pathProject = "./projects/" + username + "/" + project;
-  if (fishyPath(pathProject, path)) return false;
+  if (fishyProject(project) || fishyPath(pathProject, path)) return false;
   var pathFull = pathProject + "/" + path;
   try {
-    fs.statSync(pathFull);
-    fs.unlinkSync(pathFull);
+    var stats = fs.statSync(pathFull);
+    if (stats.isFile()) {
+      deleteFile(pathFull);
+      return true;
+    } else if (stats.isDirectory()) {
+      deleteDir(pathFull);
+      return true;
+    }
+  } catch (error) {
+    return false;
+  }
+  return false;
+}
+
+function deleteFile(path) {
+  fs.unlinkSync(path);
+}
+
+function deleteDir(path) {
+  try {
+    fs.statSync(path);
+    fs.rmdirSync(path, { recursive: true });
     return true;
   } catch (error) {
     return false;
   }
+}
+
+function deleteUser(username) {
+  return deleteDir("./projects/" + username);
+}
+
+function deleteProject(username, project) {
+  if (fishyProject(project)) return false;
+  return deleteDir("./projects/" + username + "/" + project);
 }
 
 module.exports = {
@@ -156,7 +197,9 @@ module.exports = {
   createProject,
   createFile,
   renameFile,
-  deleteFile,
   createDir,
   createHomeDir,
+  deleteObject,
+  deleteUser,
+  deleteProject,
 };
