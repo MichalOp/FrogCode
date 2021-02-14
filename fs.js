@@ -2,6 +2,8 @@ var fs = require("fs");
 var pathmodule = require("path");
 
 function fishyPath(pathProject, path) {
+  if (path == ".") return false;
+
   var areDotsOrSymlinks =
     pathmodule.resolve(pathProject) + "/" + path !=
     pathmodule.resolve(pathProject, path);
@@ -11,9 +13,15 @@ function fishyPath(pathProject, path) {
 
 function getObject(username, project, path) {
   var pathProject = "./projects/" + username + "/" + project;
-  if (fishyPath(pathProject, path)) return { type: "error", data: "" };
+  if (fishyPath(pathProject, path))
+    return { type: "error", data: "fishy path" };
   var pathFull = pathProject + "/" + path;
-  var stats = fs.statSync(pathFull);
+  var stats;
+  try {
+    stats = fs.statSync(pathFull);
+  } catch (error) {
+    return { type: "error", data: "does not exist" };
+  }
   if (stats.isFile()) return { type: "file", data: readFile(pathFull) + "" };
   else if (stats.isDirectory()) return { type: "dir", data: readDir(pathFull) };
 }

@@ -64,12 +64,7 @@ async function writeUser(displayname, username, pwdhash, verbose = false) {
 async function createUser(displayname, username, pwdhash, verbose = false) {
   var does_exist = await selectUser(username, verbose);
   if (!does_exist) {
-    var success = await writeUser(
-      displayname,
-      username,
-      pwdhash,
-      (verbose = true)
-    );
+    var success = await writeUser(displayname, username, pwdhash, verbose);
     return success;
   }
   return false;
