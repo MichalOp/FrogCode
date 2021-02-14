@@ -191,6 +191,8 @@ function deleteProject(username, project) {
 }
 
 module.exports = {
+  fishyProject,
+  fishyPath,
   getObject,
   getProjects,
   writeFile,
