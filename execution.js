@@ -7,19 +7,27 @@ module.exports = function(server, sessionParser){
     });
 
     io.on('connection', function (client) {
-
         console.log("received");
         const sess = client.request.session;
         if (!sess || !sess.userId) {
-            console.log('Session is incorrect');
+            console.log('Session is incorrect!');
             return;
         } else {
             console.log(`user: ${sess.userId}`)
         }
+        project = null;
+        if(!client.handshake.query || !client.handshake.query.project){
+            console.log('No project id provided!');
+            return
+        }else{
+            project = client.handshake.query.project;
+        }
+
+        console.log(`project: ${project}`);
     
         const sh = spawn('docker', ['run', '-it', '--rm',
-            '--mount', `src=${__dirname}/data/${sess.userId},target=/root/${sess.userId},type=bind`,
-            '-w', `/root/${sess.userId}`,
+            '--mount', `src=${__dirname}/projects/${sess.userId}/${project},target=/root/${project},type=bind`,
+            '-w', `/root/${project}`,
             'python:3.7',
             'bash'], {
             name: 'xterm-color',
