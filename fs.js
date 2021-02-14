@@ -8,7 +8,7 @@ function fishyPath(pathProject, path) {
 
   var fullPath = pathProject + "/" + path;
 
-  fpls = fullPath.split("/");
+  var fpls = fullPath.split("/");
   var areSymlinks = false;
   var partPath = "";
   var broken = false;
