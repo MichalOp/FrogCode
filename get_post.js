@@ -148,7 +148,7 @@ module.exports = function (app) {
     res.json({ success: success });
   });
 
-  app.post("/deleteFile", (req, res) => {
+  app.post("/deleteObject", (req, res) => {
     if (!req.session || !req.session.userId) {
       res.json({ success: false, reason: "bad session id" });
       return;
@@ -156,8 +156,49 @@ module.exports = function (app) {
 
     var username = req.session.userId;
 
-    var success = fsjs.deleteFile(username, req.body.project, req.body.path);
+    var success = fsjs.deleteObject(username, req.body.project, req.body.path);
 
     res.json({ success: success });
+  });
+
+  app.post("/deleteProject", (req, res) => {
+    if (!req.session || !req.session.userId) {
+      res.json({ success: false, reason: "bad session id" });
+      return;
+    }
+
+    var username = req.session.userId;
+
+    var success = fsjs.deleteProject(username, req.body.project);
+
+    res.json({ success: success });
+  });
+
+  app.post("/deleteUser", (req, res) => {
+    if (!req.session || !req.session.userId) {
+      res.json({ success: false, reason: "bad session id" });
+      return;
+    }
+
+    var username = req.session.userId;
+
+    dbjs.deleteUser(username, (verbose = true)).then((dbsuccess) => {
+      var fssuccess = false;
+      if (dbsuccess) fssuccess = fsjs.deleteUser(username);
+      console.log(dbsuccess);
+      console.log(fssuccess);
+      var success = dbsuccess && fssuccess;
+      if (success) req.session.destroy();
+      res.json({ success: success });
+    });
+  });
+
+  app.post("/logout", (req, res) => {
+    if (!req.session || !req.session.userId) {
+      res.json({ success: false, reason: "bad session id" });
+      return;
+    }
+    req.session.destroy();
+    res.json({ success: true });
   });
 };
