@@ -25,6 +25,24 @@ module.exports = function (app) {
       });
   });
 
+  app.post("/getUser", (req, res) => {
+    if (!req.session || !req.session.userId) {
+      res.json({ success: false, reason: "bad session id" });
+      return;
+    }
+
+    dbjs
+      .getUser(req.session.userId)
+      .then((result) => {
+        if (result) {
+          res.json({ success: true, result:result});
+          return
+        }
+        res.json({success: false});
+      });
+  });
+
+
   app.post("/createUser", (req, res) => {
     dbjs
       .createUser(
