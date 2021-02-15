@@ -11,3 +11,11 @@ function PostAPI(input, url, processOutput) {
     var data = JSON.stringify(input);
     xhr.send(data);
 }
+
+function RedirectIfLogged() {
+    PostAPI({}, "/getUser", (res) => {
+        if(res.success === true) {
+            window.location.replace("/dashboard.html");
+        }
+    })
+}
