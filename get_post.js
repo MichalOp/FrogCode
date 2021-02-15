@@ -69,7 +69,11 @@ module.exports = function (app) {
     var username = req.session.userId;
 
     dbjs
-      .changePwd(username, pwdjs.getPwdhash(req.body.newpwdhash))
+      .changePwd(
+        username,
+        pwdjs.getPwdhash(req.body.oldpwdhash),
+        pwdjs.getPwdhash(req.body.newpwdhash)
+      )
       .then((success) => {
         res.json({ success: success });
       });
