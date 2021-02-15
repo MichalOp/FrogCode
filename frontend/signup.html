@@ -4,22 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="css/login.css">
+  <link rel="stylesheet" href="css/signup.css">
 </head>
 <body onload="RedirectIfLogged()">
-  Displayname:
-  <input id="displayname" type="text" value><br>
-  Username:
-  <input id="username" type="text" value><br>
-  Password:
-  <input id="pswd" type="password" value><br>
-  Confirm Password:
-  <input id="cpswd" type="password" value><br>
-  <div id="submitButton">
-    <button type="button" onclick="signup()">Sign Up</button>
-  </div>
-  <div id="error"></div>
+  <!-- TOP BAR -->
+  <nav class="bar">
+    <a href="./index.html" class="nav_button">FrogCode</a>
+    <div class="rectangle">&nbsp;</div>
+  </nav>
 
+
+  <div class="container">
+    <b>Displayname:</b><br>
+    <input id="displayname" type="text" value><br>
+    <b>Username:</b><br>
+      <input id="username" type="text" value><br>
+      <b>Password:</b><br>
+      <input id="pswd" type="password" value><br>
+      <b>Confirm Password:</b><br>
+      <input id="cpswd" type="password" value><br>
+      <br>
+    <div id="submitButton">
+      <button class="button" type="button" onclick="signup()">Sign up</button>
+    </div>
+    <div id="error"></div>
+  </div>
   <script src="./apicalls.js"></script>
   <script type="text/javascript" src="./signup.js"></script>
   <script type="text/javascript" src="./apicalls.js"></script>

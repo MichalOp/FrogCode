@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/personal.css">
+</head>
+<body onload="GetWelcomeMessage(); RedirectToLog()">
+
+  <!-- TOP BAR -->
+  <nav class="bar">
+    <a href="./dashboard.html" class="nav_button">FrogCode</a>
+    <div class="rectangle">&nbsp;</div>
+    <a onclick="LogOut()" class="login_nav_button">Logout</a>
+    <a href="./dashboard.html" class="login_nav_button" id="username"></a>
+  </nav>
+  <div class="block">
+    <div>Settings</div><br><br>
+      <b>Old Password:</b><br>
+      <input id="pswd" type="password" value><br>
+      <b>New Password:</b><br>
+      <input id="npswd" type="password" value><br>
+      <b>Confirm New Password:</b><br>
+      <input id="cnpswd" type="password" value><br>
+      <br>
+      <button class="button" type="button" onclick="changePassword()">Change password</button>
+      <br><br><br>
+    <button class="redbutton" type="button" onclick="deleteAccount()">Delete account</button>
+    <script src="./apicalls.js"></script>
+    <script type="text/javascript" src="./dashboard.js"></script>
+    <script type="text/javascript" src="./personal.js"></script>
+  </div>
+</body>
+</html>

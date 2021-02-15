@@ -10,8 +10,12 @@ function RenderTable(resp) {
         var row = ptable.insertRow(-1);
         var cell1 = row.insertCell(0);
         cell1.appendChild(CreateProjectButton(pname));
-        var cell2 = row.insertCell(1);
-        cell2.appendChild(CreateProjectDeleteButton(pname));
+        var cell2 = row.insertCell(1)
+        var emptyCell = document.createElement("td");
+        emptyCell.classList.add("emptycell");
+        cell2.appendChild(emptyCell);
+        var cell3 = row.insertCell(2);
+        cell3.appendChild(CreateProjectDeleteButton(pname));
     });
 }
 
@@ -53,6 +57,7 @@ function GetWelcomeMessage() {
 function RenderMessage(res) {
     if(res.success === true) {
         document.getElementById("welcomeMessage").innerHTML = "Welcome " + res.result.displayname;
+        document.getElementById("username").innerHTML = res.result.displayname;
     } else {
         console.log("Error grabing the displayname");
     }

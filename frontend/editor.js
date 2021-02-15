@@ -191,3 +191,15 @@ function LetTabbeTab() {
         }
     });
 }
+
+function FillUserName() {
+    PostAPI({}, "/getUser", RenderMessage);
+}
+
+function RenderMessage(res) {
+    if (res.success === true) {
+        document.getElementById("username").innerHTML = res.result.displayname;
+    } else {
+        console.log("error grabing the displayname");
+    }
+}

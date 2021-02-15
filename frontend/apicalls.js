@@ -19,3 +19,16 @@ function RedirectIfLogged() {
         }
     })
 }
+
+function RedirectToLog() {
+    PostAPI({}, "/getUser", (res) => {
+        if(res.success === false) {
+            window.location.replace("/login.html");
+        }
+    })
+}
+
+function LogOut() {
+    PostAPI({},"/logout", console.log)
+    window.location.assign("index.html");
+}

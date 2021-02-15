@@ -7,15 +7,24 @@
   <link rel="stylesheet" href="css/login.css">
 </head>
 <body onload="RedirectIfLogged()">
-  Username:
-    <input id="username" type="text" value><br>
-  Password:
-    <input id="pswd" type="password" value><br>
-  <div id="submitButton">
-    <button type="button" onclick="login()">Log In</button>
-  </div>
-  <div id="error"></div>
+  <!-- TOP BAR -->
+  <nav class="bar">
+    <a href="./index.html" class="nav_button">FrogCode</a>
+    <div class="rectangle">&nbsp;</div>
+  </nav>
 
+
+  <div class="container">
+    <b>Username:</b><br>
+      <input id="username" type="text" value><br>
+    <b>Password:</b><br>
+      <input id="pswd" type="password" value><br>
+      <br>
+    <div id="submitButton">
+      <button class="button" type="button" onclick="login()">Log In</button>
+    </div>
+    <div id="error"></div>
+  </div>
   <script src="./apicalls.js"></script>
   <script type="text/javascript" src="./login.js"></script>
   <script type="text/javascript" src="./apicalls.js"></script>
