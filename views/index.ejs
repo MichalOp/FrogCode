@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
     <title>Document</title>
 </head>
 
@@ -111,6 +112,16 @@
         <input type="submit">
     </form>
     <a href="/term">Open terminal</a>
+
+    <script> 
+        function myFunction(){
+            $.post("/createUser", {displayname:"AA",username:"AA", pwdhash:"a"}).then((res) => console.log(res));
+        } 
+    </script>
+
+    <button onclick="myFunction()">Click me</button>
+
+   
 </body>
 
 </html>
