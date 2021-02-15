@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="css/dashboard.css">
   <link rel="stylesheet" href="css/personal.css">
 </head>
-<body onload="GetWelcomeMessage(); RedirectToLog()">
+<body onload="RedirectToLog()">
 
   <!-- TOP BAR -->
   <nav class="bar">
@@ -26,11 +26,13 @@
       <input id="cnpswd" type="password" value><br>
       <br>
       <button class="button" type="button" onclick="changePassword()">Change password</button>
+      <div id="error"></div>
       <br><br><br>
     <button class="redbutton" type="button" onclick="deleteAccount()">Delete account</button>
     <script src="./apicalls.js"></script>
     <script type="text/javascript" src="./dashboard.js"></script>
     <script type="text/javascript" src="./personal.js"></script>
+    <script type="text/javascript" src="node_modules/digest-js/build/digest.min.js"></script>
   </div>
 </body>
 </html>

@@ -1,10 +1,12 @@
 function changePassword() {
-    var oldpass = document.getElementById("pswd");
-    var newpass = document.getElementById("npswd");
-    var cnewpass = document.getElementById("cnpswd");
+    var oldpass = document.getElementById("pswd").value;
+    var newpass = document.getElementById("npswd").value;
+    var cnewpass = document.getElementById("cnpswd").value;
     if(newpass != cnewpass) {
-        document.getElementByID("error").innerHTML = "Passwords don't match"
+        document.getElementById("error").innerHTML = "Passwords don't match"
     }
+    console.log(oldpass);
+    console.log(newpass);
     data = {oldpwdhash: getHash(oldpass), newpwdhash: getHash(newpass)}
     PostAPI(data, "/changePwd", console.log);
 }
