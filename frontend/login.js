@@ -1,9 +1,16 @@
 function login() {
-    var email = document.getElementById("email").value
+    var username = document.getElementById("username").value
     var pswd  = document.getElementById("pswd").value
     //some sort of logic like hashing and posting
-    console.log(email,pswd)
+    postdir = {username: username, pwdhash: pswd};
+    PostAPI(postdir, "/authenticateUser", ProcessServerLogin);
+}
 
-    console.log("go to dashboard")
-    window.location.replace("dashboard.html")
+function ProcessServerLogin(status) {
+    if(status.success === true) {
+        window.location.assign("./dashboard.html");
+    } else {
+        var error = document.getElementById("error");
+        error.innerHTML = "Incorrect username or password";
+    }
 }

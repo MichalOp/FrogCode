@@ -1,9 +1,19 @@
 function signup() {
-    var email = document.getElementById("email").value
+    var displayname = document.getElementById("displayname").value
+    var username = document.getElementById("username").value
     var pswd  = document.getElementById("pswd").value
     var cpswd = document.getElementById("cpswd").value
     //some sort of logic like hashing and posting
-    console.log(email,pswd,cpswd)
+    postdir = {username: username, displayname: displayname,
+               pwdhash: pswd};
+    PostAPI(postdir, "/createUser", ProcessServerSignUp)
+}
 
-    window.location.replace("successfullsignup.html")
+function ProcessServerSignUp(status) {
+    if(status.success === true) {
+        window.location.assign("./successfullsignup.html");
+    } else {
+        var error = document.getElementById("error");
+        error.innerHTML = "Something XD";
+    }
 }

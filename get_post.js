@@ -2,9 +2,9 @@ var dbjs = require("./db.js");
 var fsjs = require("./fs.js");
 
 module.exports = function (app) {
-  app.get("/", (req, res) => {
-    res.render("index", { ok: "nie ok", current_code: "" });
-  });
+  //app.get("/", (req, res) => {
+  //  res.render("index", { ok: "nie ok", current_code: "" });
+  //});
 
   app.get("/term", (req, res) => {
     res.render("term");

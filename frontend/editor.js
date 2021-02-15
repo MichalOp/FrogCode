@@ -1,3 +1,7 @@
+const params = new URLSearchParams(window.location.search)
+const projectName = params.get("projectname")
+console.log(projectName)
+
 function ProcessProjectList(plist, pname) {
     var filetree = document.createElement("li");
     var node = document.createElement("span");
@@ -28,10 +32,10 @@ function ProcessProjectList(plist, pname) {
     return filetree;
 }
 
-function RenderFileTree(plist, pname) {
+function RenderFileTree(plist) {
     var treeview = document.createElement("ul");
     treeview.id = "myUL";
-    treeview.appendChild(ProcessProjectList({"file1": null, "dir1": {"file2": null, "file3": null}, "dir2": {"file4": null, "file5": null}, "file6": null}, pname));
+    treeview.appendChild(ProcessProjectList({"file1": null, "dir1": {"file2": null, "file3": null}, "dir2": {"file4": null, "file5": null}, "file6": null}, projectName));
     document.getElementById("filetree").appendChild(treeview);
 }
 

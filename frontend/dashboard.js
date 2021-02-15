@@ -1,40 +1,24 @@
 var ptable = document.getElementById("projectTable");
 
 function RefreshTable() {
-    let tableContent = GetTableFromServer();
-    RenderTable(tableContent);
+    PostAPI({}, "/getProjects", RenderTable);
 }
 
-function GetTableFromServer() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onload = () => {
-        if(xhttp.status === 200) {
-            let response = this.responseText;
-            return response;
-        }
-    }
-    xhttp.open("GET", "ajax_test.txt", true);
-    xhttp.send();
-}
-
-function RenderTable() {
+function RenderTable(resp) {
     ptable.innerHTML = "";
-    var row = ptable.insertRow(0);
-    var cell1 = row.insertCell(0);
-    var data = "oldProject";
-    var button = CreateProjectButton(data);
-    cell1.appendChild(button);
+    resp.projects.forEach( (pname) => {
+        var row = ptable.insertRow(-1);
+        var cell1 = row.insertCell(0);
+        var button = CreateProjectButton(pname);
+        cell1.appendChild(button);
+    });
 }
 
 function AddNewProject() {
-    var data = document.getElementById("pname").value
+    var data = {project: document.getElementById("pname").value}
     document.getElementById("pname").value = "";
-    console.log(data)
-    var row = ptable.insertRow(1);
-    var cell1 = row.insertCell(0);
-    cell1.appendChild(CreateProjectButton(data))
-    //push data into server
-    //RefreshTable();
+    PostAPI(data, "createProject", console.log);
+    RefreshTable();
 }
 
 function CreateProjectButton(projectName) {
@@ -47,7 +31,5 @@ function CreateProjectButton(projectName) {
 }
 
 function ProjectSelected(projectName) {
-    console.log("I'm here boy")
-    console.log(projectName)
+    window.location.assign(`/editor.html?projectname=${projectName}`)
 }
-

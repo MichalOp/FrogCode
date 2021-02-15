@@ -17,6 +17,9 @@ app.set("views", "./views");
 
 app.use("/node_modules", express.static("./node_modules"));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("./frontend"));
+
+app.use(require("body-parser").json())
 
 const sessionParser = session({
   saveUninitialized: false,
