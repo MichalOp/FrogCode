@@ -99,7 +99,7 @@ async function deleteUser(username, verbose = false) {
   return false;
 }
 
-async function changePwd(username, pwdhash) {
+async function overwritePwd(username, pwdhash) {
   var pool = new pg.Pool({
     host: "localhost",
     database: "postgres",
@@ -117,6 +117,15 @@ async function changePwd(username, pwdhash) {
     return false;
   }
   return true;
+}
+
+async function changePwd(username, oldpwdhash, newpwdhash, verbose = true) {
+  var auth = await authenticateUser(username, oldpwdhash, verbose);
+  if (auth) {
+    var success = await overwritePwd(username, newpwdhash);
+    return success;
+  }
+  return false;
 }
 
 module.exports = {
