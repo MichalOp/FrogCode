@@ -1,5 +1,6 @@
 var dbjs = require("./db.js");
 var fsjs = require("./fs.js");
+var pwdjs = require("./pwd.js");
 
 module.exports = function (app) {
   app.get("/", (req, res) => {
@@ -12,10 +13,10 @@ module.exports = function (app) {
 
   app.post("/authenticateUser", (req, res) => {
     console.log(req.body.username);
-    console.log(req.body.pwdhash);
+    console.log(pwdjs.getPwdhash(req.body.pwdhash));
 
     dbjs
-      .authenticateUser(req.body.username, req.body.pwdhash)
+      .authenticateUser(req.body.username, pwdjs.getPwdhash(req.body.pwdhash))
       .then((success) => {
         if (success) {
           req.session.userId = req.body.username;
@@ -48,7 +49,7 @@ module.exports = function (app) {
       .createUser(
         req.body.displayname,
         req.body.username,
-        req.body.pwdhash,
+        pwdjs.getPwdhash(req.body.pwdhash),
         (verbose = true)
       )
       .then((dbsuccess) => {
@@ -67,9 +68,11 @@ module.exports = function (app) {
 
     var username = req.session.userId;
 
-    dbjs.changePwd(username, req.body.newpwdhash).then((success) => {
-      res.json({ success: success });
-    });
+    dbjs
+      .changePwd(username, pwdjs.getPwdhash(req.body.newpwdhash))
+      .then((success) => {
+        res.json({ success: success });
+      });
   });
 
   app.post("/getObject", (req, res) => {
