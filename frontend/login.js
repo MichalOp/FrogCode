@@ -1,8 +1,11 @@
 function login() {
     var username = document.getElementById("username").value
     var pswd  = document.getElementById("pswd").value
-    //some sort of logic like hashing and posting
-    postdir = {username: username, pwdhash: pswd};
+    var dg = new Digest.SHA1();
+    var pwdhash = dg.digest(pswd);
+    const hashArray = Array.from(new Uint8Array(pwdhash));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    postdir = {username: username, pwdhash: hashHex};
     PostAPI(postdir, "/authenticateUser", ProcessServerLogin);
 }
 

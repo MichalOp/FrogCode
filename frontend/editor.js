@@ -108,6 +108,7 @@ function UpdateEditor(value, fullPath) {
         editor = document.getElementById("editor");
         editor.value = value.data;
         document.getElementById("filesave").onclick = () => SaveCurrentFile(fullPath);
+        document.getElementById("deletefile").onclick = () => DeleteCurrentFile(fullPath);
         document.getElementById("currentfile").innerHTML = "current file is " + fullPath;
     }
 }
@@ -116,6 +117,16 @@ function SaveCurrentFile(fullPath) {
     data = {project: projectName, path: fullPath,
             text: document.getElementById("editor").value};
     PostAPI(data, "/writeFile", console.log);
+}
+
+function DeleteCurrentFile(fullPath) {
+    data = {project: projectName, path: fullPath}
+    PostAPI(data, "/deleteObject", console.log);
+    GenFileTree();
+    editor = document.getElementById("editor");
+    editor.value = "";
+    document.getElementById("currentfile").innerHTML = "";
+
 }
 
 function OnDblClick() {
