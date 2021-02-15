@@ -1,4 +1,5 @@
 module.exports = function(server, sessionParser){
+    fishyProject = require("./fs.js").fishyProject;
     const spawn = require('node-pty').spawn;
     const io = require('socket.io')(server);
 
@@ -22,9 +23,13 @@ module.exports = function(server, sessionParser){
         }else{
             project = client.handshake.query.project;
         }
-
+        
+        if(fishyProject(project)){
+            console.log('project is bad');
+            return;
+        }
         console.log(`project: ${project}`);
-    
+        
         const sh = spawn('docker', ['run', '-it', '--rm',
             '--mount', `src=${__dirname}/projects/${sess.userId}/${project},target=/root/${project},type=bind`,
             '-w', `/root/${project}`,

@@ -201,4 +201,17 @@ module.exports = function (app) {
     req.session.destroy();
     res.json({ success: true });
   });
+
+  app.post("/getTree", (req, res) => {
+    if (!req.session || !req.session.userId) {
+      res.json({ success: false, reason: "bad session id" });
+      return;
+    }
+
+    var username = req.session.userId;
+
+    var success_tree = fsjs.getTree(username, req.body.project);
+
+    res.json(success_tree);
+  });
 };

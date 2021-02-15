@@ -5,16 +5,79 @@ var sanitize = require("sanitize-filename");
 function fishyPath(pathProject, path) {
   if (path == ".") return false;
   if (path == "") return true;
+  if (path.length >= 2 && path[0] == "." && path[1] == "/")
+    return fishyPath(pathProject, path.slice(2));
 
-  var areDotsOrSymlinks =
+  var fullPath = pathProject + "/" + path;
+
+  var fpls = fullPath.split("/");
+  var areSymlinks = false;
+  var partPath = "";
+  var broken = false;
+  fpls.forEach((name) => {
+    if (broken || areSymlinks) return;
+    partPath += name;
+    try {
+      var stats = fs.lstatSync(partPath);
+      if (stats.isSymbolicLink()) {
+        areSymlinks = true;
+        return;
+      }
+    } catch (error) {
+      broken = true;
+    }
+    partPath += "/";
+  });
+
+  var areDots =
     pathmodule.resolve(pathProject) + "/" + path !=
     pathmodule.resolve(pathProject, path);
 
-  return areDotsOrSymlinks;
+  return areDots || areSymlinks;
 }
 
 function fishyProject(project) {
   return project == "" || project != sanitize(project);
+}
+
+function convertObject(obj, name, path) {
+  var result = {};
+  result.name = name;
+  result.type = obj.type;
+  result.path = path;
+  if (result.type != "dir") result.children = [];
+  else result.children = obj.data;
+  return result;
+}
+
+function getTreeAux(username, project, pathProject, name, path) {
+  var nodeRaw = getObject(username, project, path);
+  var node = convertObject(nodeRaw, name, path);
+  var nodeRes = {};
+  nodeRes.name = node.name;
+  nodeRes.type = node.type;
+  nodeRes.path = node.path;
+  nodeRes.children = [];
+  if (nodeRes.type != "dir") return nodeRes;
+  node.children.forEach((child) => {
+    nodeRes.children.push(
+      getTreeAux(
+        username,
+        project,
+        pathProject,
+        child.name + "",
+        path + "/" + child.name
+      )
+    );
+  });
+  return nodeRes;
+}
+
+function getTree(username, project) {
+  if (fishyProject(project)) return { success: false, tree: "" };
+  var pathProject = "./projects/" + username + "/" + project;
+  var tree = getTreeAux(username, project, pathProject, ".", ".");
+  return { success: true, tree: tree };
 }
 
 function getObject(username, project, path) {
@@ -191,6 +254,8 @@ function deleteProject(username, project) {
 }
 
 module.exports = {
+  fishyProject,
+  fishyPath,
   getObject,
   getProjects,
   writeFile,
@@ -202,4 +267,5 @@ module.exports = {
   deleteObject,
   deleteUser,
   deleteProject,
+  getTree,
 };
