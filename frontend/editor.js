@@ -10,15 +10,15 @@ function ProcessProjectList(plist, pname) {
     filetree.appendChild(node);
     var children = document.createElement("ul");
     children.classList.add("nested");
-    for (let key in plist) {
-        let value = plist[key];
-        if(value === null) { //file
+    for (const value of plist) {
+        if(value.type === "file") { //file
             var file = document.createElement("li");
-            file.innerHTML = key;
+            file.innerHTML = value.name;
+            file.addEventListener("click", () => getFile(value.path));
             file.addEventListener("dblclick", OnDblClick);
             children.appendChild(file);
-        } else { //dictionary
-            children.appendChild(ProcessProjectList(value, key));
+        } else if(value.type === "dir") {
+            children.appendChild(ProcessProjectList(value.children, value.name));
         }
     }
     node.addEventListener("click", function() {
@@ -32,11 +32,89 @@ function ProcessProjectList(plist, pname) {
     return filetree;
 }
 
+function GenFileTree() {
+    document.getElementById("filetree").innerHTML = "";
+    data = {project: projectName};
+    PostAPI(data, "/getTree", (res) =>{ console.log(res); RenderFileTree(res.tree)})
+}
+
 function RenderFileTree(plist) {
+    console.log(plist);
     var treeview = document.createElement("ul");
     treeview.id = "myUL";
-    treeview.appendChild(ProcessProjectList({"file1": null, "dir1": {"file2": null, "file3": null}, "dir2": {"file4": null, "file5": null}, "file6": null}, projectName));
+    treeview.appendChild(CreateAddFileButton());
+    treeview.appendChild(CreateAddDirButton());
+    treeview.appendChild(ProcessProjectList(plist.children, projectName));
     document.getElementById("filetree").appendChild(treeview);
+}
+
+function CreateAddFileButton() {
+    var addButton = document.createElement("div");
+    var fullPath = document.createElement("input");
+    fullPath.type = "text";
+    fullPath.id = "fullpathfile";
+    var button = document.createElement("button");
+    button.innerHTML = "Add File"
+    var error = document.createElement("div");
+    error.id = "addfileerror";
+    button.addEventListener("click", () => {
+        var fp = document.getElementById("fullpathfile");
+        input = {project: projectName, path: fp.value};
+        PostAPI(input, "/createFile", console.log);
+        fp.value = "";
+        GenFileTree();
+    });
+    addButton.appendChild(fullPath);
+    addButton.appendChild(button);
+    addButton.appendChild(document.createElement("br"));
+    addButton.appendChild(error);
+    return addButton;
+}
+
+function CreateAddDirButton() {
+    var addButton = document.createElement("div");
+    var fullPath = document.createElement("input");
+    fullPath.type = "text";
+    fullPath.id = "fullpathdir";
+    var button = document.createElement("button");
+    button.innerHTML = "Add Dir"
+    var error = document.createElement("div");
+    error.id = "adddirerror";
+    button.addEventListener("click", () => {
+        var fp = document.getElementById("fullpathdir");
+        input = {project: projectName, path: fp.value};
+        PostAPI(input, "/createDir", console.log);
+        fp.value = "";
+        GenFileTree();
+    });
+    addButton.appendChild(fullPath);
+    addButton.appendChild(button);
+    addButton.appendChild(document.createElement("br"));
+    addButton.appendChild(error);
+    return addButton;
+}
+
+function getFile(fullPath) {
+    console.log("test");
+    data = {project: projectName, path: fullPath};
+    PostAPI(data, "/getObject", (res) => UpdateEditor(res, fullPath));
+}
+
+function UpdateEditor(value, fullPath) {
+    if(value.type != "file") {
+        console.log("syf");
+        return;
+    } else {
+        editor = document.getElementById("editor");
+        editor.value = value.data;
+        document.getElementById("filesave").onclick = () => SaveCurrentFile(fullPath);
+    }
+}
+
+function SaveCurrentFile(fullPath) {
+    data = {project: projectName, path: fullPath,
+            text: document.getElementById("editor").value};
+    PostAPI(data, "/writeFile", console.log);
 }
 
 function OnDblClick() {
@@ -64,8 +142,7 @@ function OnDblClick() {
 }
 
 function StartTerminal() {
-    console.log("hello?");
-    var socket = io(location.hostname+':8099',{query:{project:"testProject"}})
+    var socket = io(location.hostname+':8099',{query:{project:projectName}})
     var term = new Terminal();
     term.open(document.getElementById('terminal'));
     socket.on('connect',function() {

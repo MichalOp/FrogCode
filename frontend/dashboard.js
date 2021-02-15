@@ -9,8 +9,9 @@ function RenderTable(resp) {
     resp.projects.forEach( (pname) => {
         var row = ptable.insertRow(-1);
         var cell1 = row.insertCell(0);
-        var button = CreateProjectButton(pname);
-        cell1.appendChild(button);
+        cell1.appendChild(CreateProjectButton(pname));
+        var cell2 = row.insertCell(1);
+        cell2.appendChild(CreateProjectDeleteButton(pname));
     });
 }
 
@@ -27,6 +28,17 @@ function CreateProjectButton(projectName) {
     button.classList.add("projectButton");
     button.innerHTML = projectName;
     button.onclick = () => ProjectSelected(projectName);
+    return button;
+}
+
+function CreateProjectDeleteButton(projectName) {
+    var button = document.createElement("button");
+    button.type = "button";
+    button.innerHTML = "kosz";
+    button.onclick = () => {
+        var data = {project: projectName};
+        PostAPI(data, "/deleteProject", () => RefreshTable());
+    }
     return button;
 }
 
