@@ -36,8 +36,7 @@ module.exports = function(server, sessionParser){
             'python:3.7',
             'bash'], {
             name: 'xterm-color',
-            cols: 80,
-            rows: 30
+            cols: 80, rows: 30
         });
     
         sh.on('data', function (data) {

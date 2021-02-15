@@ -1,0 +1,113 @@
+.nested {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.treenode {
+    cursor: pointer;
+    user-select: none;
+}
+
+.treenode::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.treenode-down::before {
+  transform: rotate(90deg);
+}
+
+ul, #myUL {
+    list-style-type: none;
+}
+
+#myUL {
+  margin: 0;
+  padding: 0;
+}
+
+.filetreestyle {
+    display:inline-block;
+    float:left;
+    width: 25%;
+}
+
+.rightside {
+    display:inline-block;
+    float:left;
+    width: 75%;
+}
+
+.editor {
+    display:inline-block;
+    float:left;
+    width: 75%;
+    height:75%;
+}
+
+.terminal {
+    display:inline-block;
+    float:left;
+    width: 50%;
+    height: 25%;
+}
+
+html {
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    margin: 0px;
+    min-height: 100%;
+    width: 100%;
+}
+
+.bar {
+    top: 0;
+    width: 70%;
+    overflow: hidden;
+    padding-left: 15%;
+    padding-right: 15%;
+    background-color: #000000;
+}
+
+.nav_button, .login_nav_button
+{
+    float: left;
+    text-decoration: none;
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+}
+
+.login_nav_button {
+    float: right;
+}
+
+.nav_button:hover {
+    background-color: #333;
+}
+
+.login_nav_button:hover {
+    background-color: #333;
+}
+
+.rectangle {
+    float: left;
+    width: 15%;
+    padding: 14px 16px;
+}
+
+.block {
+    padding: 3% 15% 0% 15%;
+    margin-bottom: 1px;
+}

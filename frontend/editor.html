@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/editor.css">
+  <link rel="stylesheet" href="node_modules/xterm/css/xterm.css" />
+</head>
+<body onload="GenFileTree(); LetTabbeTab(); StartTerminal(); FillUserName(); RedirectToLog()">
+  <nav class="bar">
+    <a href="./dashboard.html" class="nav_button">FrogCode</a>
+    <div class="rectangle">&nbsp;</div>
+    <a onclick="LogOut()" class="login_nav_button">Logout</a>
+    <a href="./personal.html" class="login_nav_button" id="username"></a>
+  </nav>
+  <div class="block">
+    <div class="filetreestyle" id="filetree"></div>
+    <div class="rightside">
+      <div class="editor">
+        <button type="button" id="filesave">Save file</button>
+        <button type="button" id="deletefile">Delete file</button>
+        <div id="currentfile" type="text"></div><br>
+        <textarea id="editor" rows="27" cols="120"></textarea>
+      </div>
+
+      <div class="terminal" id="terminal"></div>
+    </div>
+  </div>
+  <script type="text/javascript" src="./editor.js"></script>
+  <script type="text/javascript" src="./apicalls.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="node_modules/xterm/lib/xterm.js"></script>
+ </body>
+</html>

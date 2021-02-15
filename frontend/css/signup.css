@@ -1,0 +1,73 @@
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    width: 400px;
+    height: 400px;
+    margin-top: 15%;
+}
+
+.button {
+    display: block;
+    width: 100%;
+    border: none;
+    background-color: green;
+    padding: 14px 28px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+}
+
+html {
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    margin: 0px;
+    min-height: 100%;
+    width: 100%;
+}
+
+.bar {
+    top: 0;
+    width: 70%;
+    overflow: hidden;
+    padding-left: 15%;
+    padding-right: 15%;
+    background-color: #000000;
+}
+
+.nav_button, .login_nav_button
+{
+    float: left;
+    text-decoration: none;
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+}
+
+.login_nav_button {
+    float: right;
+}
+
+.nav_button:hover {
+    background-color: #333;
+}
+
+.login_nav_button:hover {
+    background-color: #333;
+}
+
+.rectangle {
+    float: left;
+    width: 15%;
+    padding: 14px 16px;
+}
+
+.block {
+    padding: 3% 15% 0% 15%;
+    margin-bottom: 1px;
+}
