@@ -45,3 +45,15 @@ function CreateProjectDeleteButton(projectName) {
 function ProjectSelected(projectName) {
     window.location.assign(`/editor.html?projectname=${projectName}`)
 }
+
+function GetWelcomeMessage() {
+    PostAPI({}, "/getUser", RenderMessage);
+}
+
+function RenderMessage(res) {
+    if(res.success === true) {
+        document.getElementById("welcomeMessage").innerHTML = "Welcome " + res.result.displayname;
+    } else {
+        console.log("Error grabing the displayname");
+    }
+}
