@@ -187,7 +187,7 @@ function createDir(username, project, path) {
   }
 }
 
-function renameFile(username, project, path, newpath) {
+function renameObject(username, project, path, newpath) {
   var pathProject = "./projects/" + username + "/" + project;
   if (
     fishyProject(project) ||
@@ -259,7 +259,7 @@ module.exports = {
   writeFile,
   createProject,
   createFile,
-  renameFile,
+  renameObject,
   createDir,
   createHomeDir,
   deleteObject,

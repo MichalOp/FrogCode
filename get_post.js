@@ -134,7 +134,7 @@ module.exports = function (app) {
     res.json({ success: success });
   });
 
-  app.post("/renameFile", (req, res) => {
+  app.post("/renameObject", (req, res) => {
     if (!req.session || !req.session.userId) {
       res.json({ success: false, reason: "bad session id" });
       return;
@@ -142,7 +142,7 @@ module.exports = function (app) {
 
     var username = req.session.userId;
 
-    var success = fsjs.renameFile(
+    var success = fsjs.renameObject(
       username,
       req.body.project,
       req.body.path,
