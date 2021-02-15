@@ -27,6 +27,15 @@ async function selectUser(username, verbose = false) {
   else return false;
 }
 
+async function getUser(username, verbose = false) {
+  var user = await selectUser(username, verbose);
+  if(user){
+    return {username: user.username, displayname: user.displayname};
+  }else{
+    return user;
+  }
+}
+
 async function authenticateUser(username, pwdhash, verbose = false) {
   var user = await selectUser(username, verbose);
   if (user && user.pwdhash == pwdhash) {
@@ -120,6 +129,7 @@ async function changePwd(username, pwdhash) {
 }
 
 module.exports = {
+  getUser,
   selectUser,
   authenticateUser,
   writeUser,
