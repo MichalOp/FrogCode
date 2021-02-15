@@ -108,6 +108,7 @@ function UpdateEditor(value, fullPath) {
         editor = document.getElementById("editor");
         editor.value = value.data;
         document.getElementById("filesave").onclick = () => SaveCurrentFile(fullPath);
+        document.getElementById("currentfile").innerHTML = "current file is " + fullPath;
     }
 }
 
@@ -160,4 +161,22 @@ function StartTerminal() {
     term.onData(function(data) {
         socket.send(data);
     })
+}
+
+function LetTabbeTab() {
+    document.getElementById("editor").addEventListener('keydown', function(e) {
+        if (e.key == 'Tab') {
+            e.preventDefault();
+            var start = this.selectionStart;
+            var end = this.selectionEnd;
+
+            // set textarea value to: text before caret + tab + text after caret
+            this.value = this.value.substring(0, start) +
+                "    " + this.value.substring(end);
+
+            // put caret at right position again
+            this.selectionStart =
+                this.selectionEnd = start + 4;
+        }
+    });
 }
